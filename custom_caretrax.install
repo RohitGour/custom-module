@@ -1,0 +1,72 @@
+<?php
+
+function custom_caretrax_install() {
+// Use schema API to create database table.
+   drupal_install_schema('custom_team_member');
+}
+
+
+/**
+* Implementation of hook_uninstall().
+*/
+function custom_caretrax_uninstall() {
+// Remove tables.
+drupal_uninstall_schema('custom_team_member');
+}
+
+/**
+* Implementation of hook_schema().
+*/
+
+function custom_caretrax_schema() {
+	 $schema['custom_team_member'] = array(
+		'description' => t('The base table for team member.'),
+		'fields' => array(
+		  'omid' => array(
+			'description' => 'The primary identifier for team member table.',
+			'type' => 'serial',
+			'unsigned' => TRUE,
+			'not null' => TRUE
+		  ),
+		  'custom_team_name' => array(
+			'description' => 'Team name.',
+			'type' => 'varchar',
+			'length' => 255,
+			'not null' => TRUE,
+			'default' => ''
+			),
+		 'custom_team_member' => array(
+			'description' => 'Team member .',
+			'type' => 'varchar',
+			'length' => 255,
+			'not null' => FALSE,
+			'default' => 'NULL'
+		  ),
+		   'delta' => array(
+			'description' => 'Delta',
+			'type' => 'varchar',
+			'length' => 255,
+			'not null' => TRUE,
+			'default' => ''
+			),
+		   'custom_project_name' => array(
+			'description' => 'project name.',
+			'type' => 'varchar',
+			'length' => 255,
+			'not null' => TRUE,
+			'default' => ''
+			),
+			 'custom_organization_name' => array(
+			'description' => 'Organization name.',
+			'type' => 'varchar',
+			'length' => 255,
+			'not null' => TRUE,
+			'default' => ''
+			),
+			
+		),
+		'primary key' => array('omid'),
+		);
+	return $schema;
+}
+?>

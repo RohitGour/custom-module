@@ -1,0 +1,5 @@
+
+name = Custom Caretrax
+description = Custom mdodule for assigning Roles to the different users.
+core = 7.x
+package = Custom Caretrax

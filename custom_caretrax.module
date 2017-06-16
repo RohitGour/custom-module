@@ -1,0 +1,1971 @@
+<?php
+/***********************************************************************/    
+				/**
+				 * Implements hook_form_alter().
+				 * 
+				 */
+/***********************************************************************/     	 
+function custom_caretrax_form_alter(&$form, &$form_state, $form_id) {
+	
+	//print '<pre>'; print_r($form_id);exit;
+	//print '<pre>'; print_r($form_id);exit;
+	
+	switch($form_id) {
+		
+
+/***********************************************************************/ 
+				/*	user_profile_form		*/	
+/***********************************************************************/ 
+    case 'user_profile_form' :
+        global $user;
+     
+	/*.....	user_profile_form for Organization Admin user.......*/	
+	   
+		if(isset($user->roles[4])){
+			if($user->roles[4] == 'Org Admin'){
+				unset($form['account']['roles']['#options'][3]);
+				unset($form['account']['roles']['#options'][4]);
+				
+				
+				unset($form['field_organisation_uaccount']['und']['#options']['_none']);
+				$u_org = $form['field_organisation_uaccount']['und']['#options'];
+				$form['user_organization'] = array(
+				  '#type' => 'textfield',
+				  '#title' => t('Organization'),
+				  '#default_value' => $u_org,
+				  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+				);
+				
+				$form['field_organisation_uaccount']['#attributes']['class'][] = 'element-invisible';
+				
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+			}
+		}
+		
+		if(isset($user->roles[6])){
+			if($user->roles[6] == 'Back Office User'){
+				unset($form['account']['roles']['#options'][3]);
+				unset($form['account']['roles']['#options'][4]);
+				unset($form['account']['roles']['#options'][6]);
+				
+				
+				unset($form['field_organisation_uaccount']['und']['#options']['_none']);
+				$u_org = $form['field_organisation_uaccount']['und']['#options'];
+				$form['user_organization'] = array(
+				  '#type' => 'textfield',
+				  '#title' => t('Organization'),
+				  '#default_value' => $u_org,
+				  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+				);
+				
+				$form['field_organisation_uaccount']['#attributes']['class'][] = 'element-invisible';
+				
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+			}
+		}
+		
+
+/***********************************************************************/ 
+				/*	user_register_form  */	
+/***********************************************************************/ 		
+    case 'user_register_form' :
+        global $user;
+     
+	/*.....	user_register_form for Organization Admin user.......*/	
+	   
+		if(isset($user->roles[4])){
+			if($user->roles[4] == 'Org Admin'){
+				unset($form['account']['roles']['#options'][3]);
+				unset($form['account']['roles']['#options'][4]);
+				
+				
+				unset($form['field_organisation_uaccount']['und']['#options']['_none']);
+				$u_org = $form['field_organisation_uaccount']['und']['#options'];
+				$form['user_organization'] = array(
+				  '#type' => 'textfield',
+				  '#title' => t('Organization'),
+				  '#default_value' => $u_org,
+				  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+				);
+				
+				$form['field_organisation_uaccount']['#attributes']['class'][] = 'element-invisible';
+				
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+			}
+		}
+		
+	/*.....	user_register_form for Back office user.......*/	
+	
+		if(isset($user->roles[6])){
+			if($user->roles[6] == 'Back Office User'){
+				unset($form['account']['roles']['#options'][3]);
+				unset($form['account']['roles']['#options'][4]);
+				unset($form['account']['roles']['#options'][6]);
+				
+				
+				unset($form['field_organisation_uaccount']['und']['#options']['_none']);
+				$u_org = $form['field_organisation_uaccount']['und']['#options'];
+				$form['user_organization'] = array(
+				  '#type' => 'textfield',
+				  '#title' => t('Organization'),
+				  '#default_value' => $u_org,
+				  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+				);
+				
+				$form['field_organisation_uaccount']['#attributes']['class'][] = 'element-invisible';
+				
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+			}
+		}
+		if(isset($user->roles[3])){
+			if($user->roles[2] != 'authenticated user' ||  $user->roles[3] != 'administrator'){
+				unset($form['field_organisation_uaccount']['und']['#options']['_none']);
+				$u_org = $form['field_organisation_uaccount']['und']['#options'];
+				$form['user_organization'] = array(
+				  '#type' => 'textfield',
+				  '#title' => t('Organization'),
+				  '#default_value' => $u_org,
+				  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+				);
+				$form['field_organisation_uaccount']['#attributes']['class'][] = 'element-invisible';
+		   }
+	   }
+	   //~ 
+
+
+	   
+    break;
+    
+ //~ case 'user_profile_form':
+  //~ 
+   //~ unset($form['field_org']['und']['#options']['_none']);
+		//~ $org_org = $form['field_org']['und']['#options'];
+		//~ $form['org_organization'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('Organization'),
+		  //~ '#default_value' => $org_org,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		//~ );
+		//~ // $form['field_org']['#attributes']['class'][] = 'element-invisible';
+   
+	   //~ 
+	   //~ 
+    //~ break;
+  
+  
+    
+/***********************************************************************/ 
+					/*	pmteam_node_form	*/	
+/***********************************************************************/ 
+    case 'pmteam_node_form':
+        unset($form['pmteam_organization']['und']['#options']['_none']);
+		$t_org = $form['pmteam_organization']['und']['#options'];
+		$t_des = $form['pmteam_organization']['und']['#description'];
+		$form['team_organization'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Organization'),
+		  '#description' => t($t_des),
+		  '#default_value' => $t_org,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		 $form['pmteam_organization']['#attributes']['class'][] = 'element-invisible';
+    break;
+    
+/***********************************************************************/ 
+				/*	pmproject_node_form		*/	
+/***********************************************************************/ 
+    case 'pmproject_node_form':
+        unset($form['pmproject_parent']['und']['#options']['_none']);
+		$p_org = $form['pmproject_parent']['und']['#options'];
+		$form['project_organization'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Organization'),
+		  '#default_value' => $p_org,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+	 	
+	$form['pmproject_parent']['#attributes']['class'][] = 'element-invisible';
+	
+	  unset($form['field__team_members_house']['und']['#options']['_none']);
+		$team_mem = $form['field__team_members_house']['und']['#options'];
+		$form['project_team_member'] = array(
+		  '#type' => 'hidden',
+		  '#title' => t('Team members'),
+		  '#default_value' => $team_mem,
+		  '#attributes' => array('type' => 'hidden','disabled' => 'disabled'),
+		);
+	 	
+	$form['field__team_members_house']['#attributes']['class'][] = 'element-invisible';
+	
+	unset($form['field_staff_list_house']['und']['#options']['_none']);
+		$team_name = $form['field_staff_list_house']['und']['#options'];
+		$form['project_team_name'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('Team members'),
+		  //~ '#default_value' => $team_name,
+		  //~ '#attributes' => array('type' => 'hidden','disabled' => 'disabled'),
+		 );
+	 	//~ 
+	//~ $form['field_staff_list_house']['#attributes']['class'][] = 'element-invisible';
+	
+	
+	//~ 
+	$form['#submit'][] = 'custom_caretrax_form_submit';
+	 
+    break;
+    
+/***********************************************************************/     
+				/*	pmexpense_node_form		*/	
+/***********************************************************************/ 
+    case 'pmexpense_node_form':
+        
+        unset($form['field_manager_name_expenses']['und']['#options']['_none']);
+		$exp_mgr = $form['field_manager_name_expenses']['und']['#options'];
+		$form['manager_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Manager Name'),
+		  '#default_value' => $exp_mgr,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_manager_name_expenses']['#attributes']['class'][] = 'element-invisible';
+		
+        unset($form['field_organization_expe']['und']['#options']['_none']);
+		$e_org = $form['field_organization_expe']['und']['#options'];
+		$form['expense_organization'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $e_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_expe']['#attributes']['class'][] = 'element-invisible';
+		
+		@$arg1 = arg(1);
+		@$node_value = node_load($arg1);
+		@$author_id = $node_value->uid;
+		@$get_author_name = user_load($author_id);
+		@$author_name = $get_author_name->name;
+	
+		unset($form['field_staff_name_expense']['und']['#options']['_none']);
+		@$mexpense_staff = $form['field_staff_name_expense']['und']['#options'];
+		global $user;
+		@$login_user = $user->uid;
+		@$staffnames = $author_name.' '.$mexpense_staff[$login_user];
+		//print_r($login_user);
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staffnames,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_expense']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['pmexpense_parent']['und']['#options']['_none']);
+		@$mexpense_member = $form['pmexpense_parent']['und']['#options'];
+		@$form['team_member'] = array(
+		//  '#type' => 'textfiled',
+		//  '#title' => t('House Name'),
+		//  '#default_value' => $mexpense_member,
+		//  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		//$form['pmexpense_parent']['#attributes']['class'][] = 'element-invisible';
+		
+//expense status condition only for manager when he edit own entries		
+		//~ global $user;
+		//~ $login_user_ex = $user->uid;
+		//~ $arg1 = arg(1);
+		//~ $node_value_ex = node_load($arg1);
+		//~ @$author_id_ex = $node_value_ex->uid;
+	    //~ @$role_id_ex = $user->roles;
+	    //~ @$loginuserrole = array_search('House Manager', $user->roles);
+		//~ 
+		  //print '<pre>'; print_r($login_user_ex);
+		 // print '<pre>'; print_r($author_id_ex);
+		  //print '<pre>'; print_r($loginuserrole); exit;
+		 //~ if(($login_user_ex == $author_id_ex) && ($loginuserrole = '5')) {
+			 //~ 
+		//~ 
+			//~ unset($form['field_status_expenses']['und']['#options']['_none']);
+			//~ $expense_status = $form['field_status_expenses']['und']['#options'];
+		
+			//~ //print '<pre>'; print_r($expense_status); exit;
+			//~ 
+			//~ unset($expense_status[83]);
+			//~ unset($expense_status[14]);
+			
+			//~ 
+            //print '<pre>'; print_r($expense_status); exit;
+
+			//~ $form['status_list'] = array(
+			  //~ '#type' => 'textfield',
+			  //~ '#title' => t('Status'),
+			  //~ '#default_value' => $expense_status,
+			 //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			 //~ );
+			//~ $form['field_status_expenses']['#attributes']['class'][] = 'element-invisible';
+		
+		
+		//}    
+global $user;
+			if($form['nid']['#value'] != ''){
+				$loginuserrole = array_search('House Manager', $user->roles);
+				$pmexp_nid = $form['nid']['#value'];
+				$node_userid = node_load($pmexp_nid);
+				$node_user = user_load($node_userid->uid);
+				$nodeuserrole = array_search('House Manager', $node_user->roles);
+				if($loginuserrole == $nodeuserrole){
+				$status_options = $form['field_status_expenses']['und']['#options'];
+				unset($status_options[14]);
+				unset($status_options[83]);
+				$form['field_status_expenses']['und']['#options'] = $status_options;				
+				  }
+				}
+			$form['#submit'][] = 'custom_caretrax_form_submit';
+
+    break;
+  
+    
+    
+    
+/***********************************************************************/    
+			/*	event_calendar_node_form(for my time)	*/	
+/***********************************************************************/ 
+    case 'event_calendar_node_form':
+        
+         unset($form['field_manager_name_event']['und']['#options']['_none']);
+		$time_mgr = $form['field_manager_name_event']['und']['#options'];
+		$form['manager_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Manager Name'),
+		  '#default_value' => $time_mgr,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_manager_name_event']['#attributes']['class'][] = 'element-invisible';
+		
+		
+        unset($form['field_organisation_event']['und']['#options']['_none']);
+		$mtime_org = $form['field_organisation_event']['und']['#options'];
+		$form['mytime_organization'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $mtime_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation_event']['#attributes']['class'][] = 'element-invisible';
+		
+        unset($form['field_house_name_event']['und']['#options']['_none']);
+		$mtime_house = $form['field_house_name_event']['und']['#options'];
+		$form['mytime_house'] = array(
+		//  '#type' => 'textfield',
+		//  '#title' => t('House Name'),
+		//  '#default_value' => $mtime_house,
+		//  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		//$form['field_house_name_event']['#attributes']['class'][] = 'element-invisible';	
+       
+        
+		//~ 
+		//~ global $user;	
+		//~ $result_team = db_select('field_data_pmteam_user', 'p')
+			//~ ->fields('p', array('entity_id'))
+			//~ ->condition('pmteam_user_target_id', $user->uid, '=')
+			//~ ->execute()->fetchCol();
+			//~ 
+		//~ $result_house_id = db_select('field_data_field_staff_list_house', 'ph')
+			//~ ->fields('ph', array('entity_id'))
+			//~ ->condition('field_staff_list_house_target_id', $result_team[0], '=')
+			//~ ->execute()->fetchCol();
+			//~ 
+		//~ $result_house_name = db_select('node', 'n')
+			//~ ->fields('n', array('title'))
+			//~ ->condition('nid', $result_house_id[0], '=')
+			//~ ->execute()->fetchCol();
+			//~ 
+		//~ $node->field_house_name_event['und'][0]['value'] = $result_house_name[0];
+		
+		global $user;
+			if($form['nid']['#value'] != ''){
+				$loginuserrole = array_search('House Manager', $user->roles);
+				$pmexp_nid = $form['nid']['#value'];
+				$node_userid = node_load($pmexp_nid);
+				$node_user = user_load($node_userid->uid);
+				$nodeuserrole = array_search('House Manager', $node_user->roles);
+				if($loginuserrole == $nodeuserrole){
+				$status_options = $form['field_status_event']['und']['#options'];
+				unset($status_options[38]);
+				unset($status_options[39]);
+				$form['field_status_event']['und']['#options'] = $status_options;				
+				  }
+				}
+		
+		
+    break;
+
+/***********************************************************************/        
+				/*	staff_data_node_form(My Data)	*/	
+				
+/***********************************************************************/    
+    case 'staff_data_node_form':
+   
+		 unset($form['field_organization_staff']['und']['#options']['_none']);
+		$mdata_org = $form['field_organization_staff']['und']['#options'];
+		$form['mydata_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $mdata_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_staff']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_house_name_staff']['und']['#options']['_none']);
+		$mdata_house = $form['field_house_name_staff']['und']['#options'];
+		$form['mydata_house'] = array(
+		 // '#type' => 'textfield',
+		 // '#title' => t('House Name'),
+		 // '#default_value' => $mdata_house,
+		//  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+	//	$form['field_house_name_staff']['#attributes']['class'][] = 'element-invisible';
+	
+	
+	
+	
+	function custom_caretrax_menu_alter(&$callbacks) {
+
+  // Move "Delete" button to local tasks instead of node edit form
+  if (isset($callbacks['node/%node/delete'])) {
+    $callbacks['node/%node/delete']['type'] = MENU_LOCAL_TASK;
+		$callbacks['node/%node/delete']['weight'] = 2; // make sure it is after Edit
+	  }
+	}
+
+	/**
+	 * Implementation of hook_form_alter().
+	 */
+	//function custom_caretrax_form_alter(&$form, $form_state, $form_id) {
+
+	  // Move "Delete" button to local tasks instead of node edit form
+	  if (empty($form_state['submitted'])) {
+		if (strcmp(substr($form_id, -10), '_node_form') == 0) {
+		  unset($form['buttons']['delete']);
+		}
+	  }
+	//}
+	
+	
+ break;
+ 
+     
+/***********************************************************************/        
+					/*	pmtask_node_form*/	
+/***********************************************************************/    
+    case 'pmtask_node_form':
+    //  print '<pre>'; print_r ($form); exit;
+    
+        unset($form['field_manager_name_todo']['und']['#options']['_none']);
+		$todo_mgr = $form['field_manager_name_todo']['und']['#options'];
+		$form['manager_org'] = array(
+		//  '#type' => 'textfield',
+		//  '#title' => t('Manager Name'),
+		//  '#default_value' => $todo_mgr,
+		//  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		//$form['field_manager_name_todo']['#attributes']['class'][] = 'element-invisible';  
+		
+       unset($form['field_organization_todo']['und']['#options']['_none']);
+		$mtask_org = $form['field_organization_todo']['und']['#options'];
+		$form['todo_organization'] = array(
+		//  '#type' => 'textfield',
+		//  '#title' => t(''),
+		//  '#default_value' => $mtask_org,
+		//  '#attributes' => array('style'=>"display:none"),
+		);
+		//$form['field_organization_todo']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_staff_name_todo']['und']['#options']['_none']);
+		$mtask_staff = $form['field_staff_name_todo']['und']['#options'];
+		$form['name_staff'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $mtask_staff,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_todo']['#attributes']['class'][] = 'element-invisible';
+		
+	   unset($form['field_house_name_main']['und']['#options']['_none']);
+		$mtask_member = $form['field_house_name_main']['und']['#options'];
+		$form['task_member'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $mtask_member,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		 );
+		//~ $form['field_house_name_todo']['#attributes']['class'][] = 'element-invisible';
+      break;
+ /***********************************************************************/     
+				/*house-secure-node-form*/		
+/***********************************************************************/    
+    case 'house_secure_node_form':
+		//print '<pre>'; print_r ($form); exit;
+     unset($form['field_organization_secure']['und']['#options']['_none']);
+		$hsecure_org = $form['field_organization_secure']['und']['#options'];
+		$form['house_secure_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $hsecure_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_secure']['#attributes']['class'][] = 'element-invisible';    
+	break;	
+/***********************************************************************/     
+				/*house-safety-node-form*/		
+/***********************************************************************/    
+    case 'house_safety_node_form':
+     //~ //print '<pre>'; print_r ($form); exit;
+     unset($form['field_organization_car']['und']['#options']['_none']);
+		$mcarchecks_org = $form['field_organization_car']['und']['#options'];
+		$form['carchecks_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $mcarchecks_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_car']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_house_name_car']['und']['#options']['_none']);
+		$mcarchecks_house = $form['field_house_name_car']['und']['#options'];
+		$form['carchecks_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $mcarchecks_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		 );
+		//~ $form['field_house_name_car']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_staff_name_car']['und']['#options']['_none']);
+		$mcarchecks_manager = $form['field_staff_name_car']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $mcarchecks_manager,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_car']['#attributes']['class'][] = 'element-invisible';
+     break;
+     
+/***********************************************************************/        
+     /*weekly-shopping-node-form*/	
+/***********************************************************************/    
+    case 'weekly_shopping_node_form':
+     //print '<pre>'; print_r ($form); exit;
+       unset($form['field_organisation_ws']['und']['#options']['_none']);
+		$ws_org = $form['field_organisation_ws']['und']['#options'];
+		$form['Weeklyshopping_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $ws_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation_ws']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_staff_name_ws']['und']['#options']['_none']);
+		$ws_staff = $form['field_staff_name_ws']['und']['#options'];
+		$form['Weeklyshopping_staff'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $ws_staff,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_ws']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_house_name_ws']['und']['#options']['_none']);
+		$ws_house = $form['field_house_name_ws']['und']['#options'];
+		$form['Weeklyshopping_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $ws_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_ws']['#attributes']['class'][] = 'element-invisible';
+     break;
+
+     
+/***********************************************************************/        
+				/*cleaning-rota-node-form*/			
+/***********************************************************************/    
+    case 'cleaning_rota_node_form':
+     //print '<pre>'; print_r ($form); exit;
+       unset($form['field_organisation_cr']['und']['#options']['_none']);
+		$cr_org = $form['field_organisation_cr']['und']['#options'];
+		$form['cleaningrota_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $cr_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation_cr']['#attributes']['class'][] = 'element-invisible';
+		
+	  unset($form['field_staff_name_cr']['und']['#options']['_none']);
+		$cr_staff = $form['field_staff_name_cr']['und']['#options'];
+		$form['cleaningrota_staff'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $cr_staff,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_cr']['#attributes']['class'][] = 'element-invisible';
+		
+	   unset($form['field_house_name_cr']['und']['#options']['_none']);
+		$cr_house = $form['field_house_name_cr']['und']['#options'];
+		$form['cleaningrota_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $cr_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_cr']['#attributes']['class'][] = 'element-invisible';
+		$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+   
+/***********************************************************************/        
+					/*risk-assessment-node-form*/		  
+/***********************************************************************/    
+    case 'risk_assessment_node_form':
+     //print '<pre>'; print_r ($form); exit;
+      unset($form['field_organisation']['und']['#options']['_none']);
+		$risk_org = $form['field_organisation']['und']['#options'];
+		$form['org_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $risk_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation']['#attributes']['class'][] = 'element-invisible';
+		
+       //~ unset($form['field_manager']['und']['#options']['_none']);
+		//~ $risk_mgr = $form['field_manager']['und']['#options'];
+		//~ $form['manager_org'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('Manager Name'),
+		  //~ '#default_value' => $risk_mgr,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		//~ );
+		//~ $form['field_manager']['#attributes']['class'][] = 'element-invisible';
+		//~ 
+	   unset($form['field_key_worker_ra']['und']['#options']['_none']);
+		$risk_key_worker = $form['field_key_worker_ra']['und']['#options'];
+		$form['org_staff'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Key Worker'),
+		  '#default_value' => $risk_key_worker,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_key_worker_ra']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_house_name_main']['und']['#options']['_none']);
+		  $risk_house = $form['field_house_name_main']['und']['#options'];
+		   $form['risk_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('Key Worker'),
+		  //~ '#default_value' => $risk_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name']['#attributes']['class'][] = 'element-invisible';
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+
+/***********************************************************************/         
+					/*contact-data-node-form*/	
+/***********************************************************************/  
+  case 'contact_data_node_form':
+     //print '<pre>'; print_r ($form); exit;
+       unset($form['field_organisation_cont']['und']['#options']['_none']);
+		$contact_org = $form['field_organisation_cont']['und']['#options'];
+		$form['org_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $contact_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation_cont']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_house_name_cont']['und']['#options']['_none']);
+		$contact_house = $form['field_house_name_cont']['und']['#options'];
+		$form['name_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $contact_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		 );
+		//~ $form['field_house_name_cont']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_manager_name']['und']['#options']['_none']);
+		$contact_mgr = $form['field_manager_name']['und']['#options'];
+		$form['name_manager'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Manager Name'),
+		  '#default_value' => $contact_mgr,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		  );
+		$form['field_manager_name']['#attributes']['class'][] = 'element-invisible';
+	  break;
+
+/***********************************************************************/         
+					/*client-node-form/		
+/***********************************************************************/  
+  case 'client_node_form':
+     //print '<pre>'; print_r ($form); exit;
+       unset($form['field_organization_client']['und']['#options']['_none']);
+		$client_org = $form['field_organization_client']['und']['#options'];
+		$form['name_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $client_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_client']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_house_name_client']['und']['#options']['_none']);
+		$contact_house = $form['field_house_name_client']['und']['#options'];
+		$form['name_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $contact_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		//~ $form['field_house_name_client']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_manager_name_client']['und']['#options']['_none']);
+		$contact_mgr = $form['field_manager_name_client']['und']['#options'];
+		$form['name_manager'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Manager Name'),
+		  '#default_value' => $contact_mgr,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		   );
+		$form['field_manager_name_client']['#attributes']['class'][] = 'element-invisible';
+	  break;
+	  	  	  
+/***********************************************************************/         
+					/*behaviour-support-node-form*/		
+/***********************************************************************/  
+  case 'behaviour_support_node_form':
+     //print '<pre>'; print_r ($form); exit;
+       unset($form['field_organisation_bs']['und']['#options']['_none']);
+		$behaviour_org = $form['field_organisation_bs']['und']['#options'];
+		$form['org_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $behaviour_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation_bs']['#attributes']['class'][] = 'element-invisible';
+		  
+       unset($form['field_manager_name_bs']['und']['#options']['_none']);
+		$behaviour_mgr = $form['field_manager_name_bs']['und']['#options'];
+		$form['manager_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Manager Name'),
+		  '#default_value' => $behaviour_mgr,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_manager_name_bs']['#attributes']['class'][] = 'element-invisible';
+		
+			
+		 unset($form['field_staff_name_bs']['und']['#options']['_none']);
+		$staff_bss = $form['field_staff_name_bs']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_bss,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_bs']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_house_name_main']['und']['#options']['_none']);
+		$staff_bss = $form['field_house_name_main']['und']['#options'];
+		$form['behaviour_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $staff_bss,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			 );
+		//~ $form['field_house_name_bs']['#attributes']['class'][] = 'element-invisible';
+		
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+     
+/***********************************************************************/        
+					/*conversations-node-form*/		
+/***********************************************************************/ 
+    case 'conversations_node_form':
+       unset($form['field_organization_conv']['und']['#options']['_none']);
+		$conv_org = $form['field_organization_conv']['und']['#options'];
+		$form['org_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $conv_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_conv']['#attributes']['class'][] = 'element-invisible'; 
+		  //~ 
+       unset($form['field_manager_name_conv']['und']['#options']['_none']);
+		$conv_mgr = $form['field_manager_name_conv']['und']['#options'];
+		$form['manager_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Manager Name'),
+		  '#default_value' => $conv_mgr,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_manager_name_conv']['#attributes']['class'][] = 'element-invisible';
+		
+	  unset($form['field_staff_name_conv']['und']['#options']['_none']);
+		$staff_conv = $form['field_staff_name_conv']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_conv,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_conv']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_house_name_main']['und']['#options']['_none']);
+		$staff_conv = $form['field_house_name_main']['und']['#options'];
+		$form['conversation_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $staff_conv,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_conv']['#attributes']['class'][] = 'element-invisible'
+		$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+	
+/***********************************************************************/     
+					/*daily-summary-node-form*/	
+/***********************************************************************/    
+    case 'daily_summary_node_form':
+    
+      unset($form['field_manager_name_ds']['und']['#options']['_none']);
+		$ds_mgr = $form['field_manager_name_ds']['und']['#options'];
+		$form['manager_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Manager Name'),
+		  '#default_value' => $ds_mgr,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_manager_name_ds']['#attributes']['class'][] = 'element-invisible';
+		
+    $form['field_record_of_conversation']['und']['#options'] == 'none';
+       unset($form['field_organization_ds']['und']['#options']['_none']);
+		$ds_org = $form['field_organization_ds']['und']['#options'];
+		$form['org_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $ds_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_ds']['#attributes']['class'][] = 'element-invisible';
+		
+        //~ unset($form['field_record_of_conversation']['und']['#options']['_none']);
+		//~ $ds_mgr = $form['field_record_of_conversation']['und']['#options'];
+		//~ $form['manager_org'] = array(
+		  //~ '#type' => 'select',
+		  //~ '#title' => t('Record of Conversation'),
+		  //~ '#default_value' => '-none-',
+		  //~ '#attributes' => array('readonly' => 'readonly'),
+		//~ );
+		//~ $form['field_record_of_conversation']['#attributes']['class'][] = 'element-invisible';
+		//~ 
+	
+       unset($form['field_staff_name_ds']['und']['#options']['_none']);
+		$staff_ds = $form['field_staff_name_ds']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_ds,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_ds']['#attributes']['class'][] = 'element-invisible';
+		
+		  unset($form['field_house_name_main']['und']['#options']['_none']);
+		$staff_ds = $form['field_house_name_main']['und']['#options'];
+		$form['ds_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $staff_ds,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_ds']['#attributes']['class'][] = 'element-invisible';
+		
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+
+
+     break;
+ 
+/***********************************************************************/         
+				/*incident-form-node-form*/		
+/***********************************************************************/    
+    case 'incident_form__node_form':
+     //print '<pre>'; print_r ($form); exit;
+         unset($form['field_organization_inc']['und']['#options']['_none']);
+		$incident_org = $form['field_organization_inc']['und']['#options'];
+		$form['org_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $incident_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_inc']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_manager_name_inc']['und']['#options']['_none']);
+		$incident_mgr = $form['field_manager_name_inc']['und']['#options'];
+		$form['manager_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Manager Name'),
+		  '#default_value' => $incident_mgr,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_manager_name_inc']['#attributes']['class'][] = 'element-invisible';
+
+       unset($form['field_staff_name_inc']['und']['#options']['_none']);
+		$staff_inci = $form['field_staff_name_inc']['und']['#options'];
+		$form['staff_name_inc_main'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_inci,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_inc']['#attributes']['class'][] = 'element-invisible';
+		
+		   unset($form['field_house_name_main']['und']['#options']['_none']);
+		$staff_inci = $form['field_house_name_main']['und']['#options'];
+		$form['incident_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('Staff Name'),
+		  //~ '#default_value' => $staff_inci,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+				);
+		//~ $form['field_house_name_inc']['#attributes']['class'][] = 'element-invisible';
+		
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+
+ /***********************************************************************/        
+				/*professional-meeting-node-form*/		
+ /***********************************************************************/    
+    case 'professional_meeting_node_form':
+     //print '<pre>'; print_r ($form); exit;
+       unset($form['field_organization_pro']['und']['#options']['_none']);
+		$org_name = $form['field_organization_pro']['und']['#options'];
+		$form['name_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $org_name,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_pro']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_manager_name_pro']['und']['#options']['_none']);
+		$profe_org = $form['field_manager_name_pro']['und']['#options'];
+		$form['manager_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Manager Name'),
+		  '#default_value' => $profe_org,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_manager_name_pro']['#attributes']['class'][] = 'element-invisible';
+		
+	   unset($form['field_staff_name_pro']['und']['#options']['_none']);
+		$profe_staff = $form['field_staff_name_pro']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $profe_staff,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_pro']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_house_name_main']['und']['#options']['_none']);
+		$profe_staff = $form['field_house_name_main']['und']['#options'];
+		$form['pro_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $profe_staff,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_pro']['#attributes']['class'][] = 'element-invisible';
+		
+		$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+  
+/***********************************************************************/        
+    /*first-aid-checks-node-form*/			
+/***********************************************************************/ 
+      case 'first_aid_checks_node_form':
+     //print '<pre>'; print_r ($form); exit;
+       unset($form['field_organisation_fac']['und']['#options']['_none']);
+		$fac_org = $form['field_organisation_fac']['und']['#options'];
+		$form['org_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $fac_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation_fac']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_staff_name_fac']['und']['#options']['_none']);
+		$profe_staff = $form['field_staff_name_fac']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $profe_staff,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_fac']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_house_name_fac']['und']['#options']['_none']);
+		$profe_house = $form['field_house_name_fac']['und']['#options'];
+		$form['staff_name'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $profe_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		   );
+		//~ $form['field_staff_name_fac']['#attributes']['class'][] = 'element-invisible';
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+
+	 break;
+
+/***********************************************************************/        
+    /*physical_intervention_node_form*/		
+/***********************************************************************/     
+    case 'physical_intervention_node_form':
+     //print '<pre>'; print_r ($form); exit;
+       unset($form['field_organization_phy']['und']['#options']['_none']);
+		$phy_org = $form['field_organization_phy']['und']['#options'];
+		$form['org_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $phy_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_phy']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_manager_name_phy']['und']['#options']['_none']);
+		$phy_mgr = $form['field_manager_name_phy']['und']['#options'];
+		$form['manager_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Manager Name'),
+		  '#default_value' => $phy_mgr,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_manager_name_phy']['#attributes']['class'][] = 'element-invisible';
+		
+      unset($form['field_staff_name_phy']['und']['#options']['_none']);
+		$staff_phy = $form['field_staff_name_phy']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_phy,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_phy']['#attributes']['class'][] = 'element-invisible';
+		
+	  unset($form['field_house_name_main']['und']['#options']['_none']);
+		$phy_house = $form['field_house_name_main']['und']['#options'];
+		$form['physical_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $phy_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		   );
+		//~ $form['field_house_name_phy']['#attributes']['class'][] = 'element-invisible';
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+      
+/***********************************************************************/         
+     /*course_data_node_form*/		
+/***********************************************************************/    
+    case 'course_data_node_form':
+     //print '<pre>'; print_r ($form); exit;
+      unset($form['field_organization_cour']['und']['#options']['_none']);
+		$course_org = $form['field_organization_cour']['und']['#options'];
+		$form['course_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(' '),
+		  '#default_value' => $course_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_cour']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_manager_name_cour']['und']['#options']['_none']);
+		$course_mgr = $form['field_manager_name_cour']['und']['#options'];
+		$form['course_mgr'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('manager Name'),
+		  //~ '#default_value' => $course_mgr,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		 );
+		//~ $form['field_manager_name_cour']['#attributes']['class'][] = 'element-invisible';
+		
+	   unset($form['field_course_provider_cour']['und']['#options']['_none']);
+		$course_provider = $form['field_course_provider_cour']['und']['#options'];
+		$form['course_provider'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('Course Provider'),
+		  //~ '#default_value' => $course_provider,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		 );
+		//~ $form['field_course_provider_cour']['#attributes']['class'][] = 'element-invisible';
+     break; 
+     
+/***********************************************************************/      
+          /*staff-training-data-node-form(My Training)*/		
+/***********************************************************************/     
+    case 'staff_training_data_node_form':
+     //print '<pre>'; print_r ($form); exit;
+     unset($form['field_organisation_std']['und']['#options']['_none']);
+		$std_org = $form['field_organisation_std']['und']['#options'];
+		$form['org_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $std_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation_std']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_staff_name_std']['und']['#options']['_none']);
+		$std_staff = $form['field_staff_name_std']['und']['#options'];
+		$form['name_staff'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $std_staff,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_std']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_house_name_std']['und']['#options']['_none']);
+		$std_house = $form['field_house_name_std']['und']['#options'];
+		$form['name_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $std_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		 );
+		//~ $form['field_house_name_std']['#attributes']['class'][] = 'element-invisible';
+		
+     break;
+     
+   
+/***********************************************************************/        
+        /*activity-money-node-form*(Inside the yp)/	
+/***********************************************************************/       
+    case 'activity_money_node_form':
+     
+     unset($form['field_organisation_activity']['und']['#options']['_none']);
+		$activity_org = $form['field_organisation_activity']['und']['#options'];
+		
+		//print '<pre>'; print_r($activity_org);exit;
+		
+		$form['yp_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $activity_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation_activity']['#attributes']['class'][] = 'element-invisible';
+	
+		
+       unset($form['field_staff_name_activity']['und']['#options']['_none']);
+		$staff_activity = $form['field_staff_name_activity']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_activity,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_activity']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_house_name_activity']['und']['#options']['_none']);
+		$staff_activity = $form['field_house_name_activity']['und']['#options'];
+		$form['activity_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $staff_activity,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_activity']['#attributes']['class'][] = 'element-invisible';
+		
+		$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+ 
+/***********************************************************************/        
+        /*placement-plan-node-form(Inside the yp)/	
+/***********************************************************************/       
+    case 'placement_plan_node_form':
+     
+     unset($form['field_organization_placement']['und']['#options']['_none']);
+		$placement_org = $form['field_organization_placement']['und']['#options'];
+		$form['placement_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $placement_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_placement']['#attributes']['class'][] = 'element-invisible';
+	
+		
+       unset($form['field_staff_name_placement']['und']['#options']['_none']);
+		$staff_placement = $form['field_staff_name_placement']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_placement,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_placement']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_house_name_main']['und']['#options']['_none']);
+		$placement_house = $form['field_house_name_main']['und']['#options'];
+		$form['placement_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $staff_activity,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_activity']['#attributes']['class'][] = 'element-invisible';
+		
+	 break;
+ 
+/***********************************************************************/        
+        /*admission-and-discharge-node-formInside the yp)/	
+/***********************************************************************/       
+    case 'admission_and_discharge_node_form':
+     
+     unset($form['field_organization_admission']['und']['#options']['_none']);
+		$admission_org = $form['field_organization_admission']['und']['#options'];
+		$form['admission_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $admission_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_admission']['#attributes']['class'][] = 'element-invisible';
+	
+		
+       unset($form['field_staff_name_admission']['und']['#options']['_none']);
+		$staff_admission = $form['field_staff_name_admission']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_admission,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_admission']['#attributes']['class'][] = 'element-invisible';
+		
+	  unset($form['field_house_name_main']['und']['#options']['_none']);
+		$admission_house = $form['field_house_name_main']['und']['#options'];
+		$form['placement_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $admission_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_activity']['#attributes']['class'][] = 'element-invisible';
+		
+	 break;		
+/***********************************************************************/         
+       /*appointment-log-node-form*/		
+/***********************************************************************/     
+    case 'appointment_log_node_form':
+    
+     //print '<pre>'; print_r ($form); exit;
+      unset($form['field_organisation_al']['und']['#options']['_none']);
+		$app_al = $form['field_organisation_al']['und']['#options'];
+		$form['org_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $app_al,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation_al']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_staff_name_al']['und']['#options']['_none']);
+		$staff_al = $form['field_staff_name_al']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_al,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_al']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_house_name_al']['und']['#options']['_none']);
+		$staff_al = $form['field_house_name_al']['und']['#options'];
+		$form['appointment_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $staff_al,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		  );
+		//~ $form['field_staff_name_al']['#attributes']['class'][] = 'element-invisible';
+		$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+
+/***********************************************************************/         
+        /*key-worker-session-node-form*/	
+/***********************************************************************/    
+    case 'key_worker_session_node_form':
+     //print '<pre>'; print_r ($form); exit;
+      unset($form['field_organization_kwc']['und']['#options']['_none']);
+		$kwc_org = $form['field_organization_kwc']['und']['#options'];
+		$form['name_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $kwc_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_kwc']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_staff_name_kwc']['und']['#options']['_none']);
+		$staff_kw = $form['field_staff_name_kwc']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_kw,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_kwc']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_house_name_kwc']['und']['#options']['_none']);
+		$staff_kw = $form['field_house_name_kwc']['und']['#options'];
+		$form['key_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $staff_kw,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		   );
+		//~ $form['field_house_name_kwc']['#attributes']['class'][] = 'element-invisible';
+		
+				$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+ 
+/***********************************************************************/      
+       /*weekly-report-node-form*/	
+/***********************************************************************/    
+    case 'weekly_report_node_form':
+     //print '<pre>'; print_r ($form); exit;
+      unset($form['field_organization_wr']['und']['#options']['_none']);
+		$wr_org = $form['field_organization_wr']['und']['#options'];
+		$form['name_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $wr_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_wr']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_key_carer_wr']['und']['#options']['_none']);
+		$staff_wr = $form['field_key_carer_wr']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Key Carer'),
+		  '#default_value' => $staff_wr,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_key_carer_wr']['#attributes']['class'][] = 'element-invisible';
+		
+	   unset($form['field_house_name_main']['und']['#options']['_none']);
+		$staff_house = $form['field_house_name_main']['und']['#options'];
+		$form['weekly_report_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('Key Carer'),
+		  //~ '#default_value' => $staff_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_wr']['#attributes']['class'][] = 'element-invisible';
+		$form['#submit'][] = 'custom_caretrax_form_submit';
+
+     break;
+ 
+/***********************************************************************/         
+      /*agency-contact-node-form*/		
+/***********************************************************************/        
+    case 'agency_contact_node_form':
+     //print '<pre>'; print_r ($form); exit;
+       unset($form['field_organization_agency']['und']['#options']['_none']);
+		$org_name = $form['field_organization_agency']['und']['#options'];
+		$form['name_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $org_name,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organization_agency']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_staff_member_agency']['und']['#options']['_none']);
+		$staff_agency = $form['field_staff_member_agency']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_agency,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_member_agency']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_house_name_agency']['und']['#options']['_none']);
+		$agency_house = $form['field_house_name_agency']['und']['#options'];
+		$form['agency_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('Staff Name'),
+		  //~ '#default_value' => $agency_house,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_agency']['#attributes']['class'][] = 'element-invisible';
+     break;
+
+/***********************************************************************/          
+       /*hand-over-node-form*/		
+/***********************************************************************/     
+    case 'hand_over_node_form':
+     //print '<pre>'; print_r ($form); exit;
+      unset($form['field_organisation_ho']['und']['#options']['_none']);
+		$ho_org = $form['field_organisation_ho']['und']['#options'];
+		$form['name_org'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t(''),
+		  '#default_value' => $ho_org,
+		  '#attributes' => array('style'=>"display:none"),
+		);
+		$form['field_organisation_ho']['#attributes']['class'][] = 'element-invisible';
+		
+       unset($form['field_staff_name_ho']['und']['#options']['_none']);
+		$staff_ho = $form['field_staff_name_ho']['und']['#options'];
+		$form['staff_name'] = array(
+		  '#type' => 'textfield',
+		  '#title' => t('Staff Name'),
+		  '#default_value' => $staff_ho,
+		  '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+		);
+		$form['field_staff_name_ho']['#attributes']['class'][] = 'element-invisible';
+		
+		unset($form['field_house_name_ho']['und']['#options']['_none']);
+		$staff_ho = $form['field_house_name_ho']['und']['#options'];
+		$form['staff_name'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('Staff Name'),
+		  //~ '#default_value' => $staff_ho,
+		  //~ '#attributes' => array('readonly' => 'readonly','disabled' => 'disabled'),
+			);
+		//~ $form['field_house_name_ho']['#attributes']['class'][] = 'element-invisible';
+		
+		
+     break;
+     
+/***********************************************************************/          
+       /*young_person_node_form*/	
+/***********************************************************************/     
+    case 'young_person_node_form':
+     //~ //print '<pre>'; print_r ($form); exit;
+       unset($form['field_organisation_yp']['und']['#options']['_none']);
+		$yp_org = $form['field_organisation_yp']['und']['#options'];
+		$form['yp_org'] = array(
+		//  '#type' => 'textfield',
+		//  '#title' => t(''),
+		//  '#default_value' => $yp_org,
+		//  '#attributes' => array('style'=>"display:none"),
+		);
+		//$form['field_organisation_yp']['#attributes']['class'][] = 'element-invisible';
+		
+		 unset($form['field_house_name_yp']['und']['#options']['_none']);
+		$yp_house = $form['field_house_name_yp']['und']['#options'];
+		$form['yp_house'] = array(
+		  //~ '#type' => 'textfield',
+		  //~ '#title' => t('House Name'),
+		  //~ '#default_value' => $yp_house,
+		  //~ '#attributes' => array('style'=>"display:none"),
+			);
+		//~ $form['field_house_name_yp']['#attributes']['class'][] = 'element-invisible';
+     break;
+    }	
+}
+
+
+/***********************************************************************/    
+			/**
+			 * Implements hook_preprocess_page().
+			 */
+			/*	 Org Logo	*/	
+/***********************************************************************/    
+
+function custom_caretrax_preprocess_page(&$variables) {
+	global $user;
+	global $base_url;
+	$cus_logo = '';
+	if($user->uid > 1){
+		$count = db_select('field_data_field_organisation_uaccount')
+				->condition('entity_id', $user->uid,'=')
+				->countQuery()->execute()->fetchField();
+				if ($count != 0) { 
+			$query = db_select('field_data_field_organisation_uaccount', 'oa');
+			$result = $query
+			  ->fields('oa', array('field_organisation_uaccount_target_id'))
+			  ->condition('entity_id', $user->uid,'=')
+			  ->execute();
+			foreach ($result as $row) {
+				$org_id = $row->field_organisation_uaccount_target_id;
+				$query = db_select('field_data_field_logo_org', 'ol');
+				$results = $query
+				  ->fields('ol', array('field_logo_org_fid'))
+				  ->condition('bundle', 'pmorganization','=')
+				  ->condition('entity_id', $org_id,'=')
+				  ->execute();
+				  foreach ($results as $rows) {
+					$logo_fid = $rows->field_logo_org_fid;
+					$f_query = db_select('file_managed', 'fm');
+					$f_result = $f_query
+					  ->fields('fm', array('uri'))
+					  ->condition('fid', $logo_fid,'=')
+					  ->execute();
+					  foreach ($f_result as $f_rows) {
+						if ($wrapper = file_stream_wrapper_get_instance_by_uri($f_rows->uri)) {
+						  $cus_logo = $wrapper->getExternalUrl();
+						}					
+					}
+				}
+			}
+			$variables['logo'] = $cus_logo;
+		}
+	}
+		
+}
+
+/***********************************************************************/    
+			/**
+			 * Implements hook_preprocess_html().
+			 */
+			/*	 Org Color	*/	
+/***********************************************************************/   
+
+function custom_caretrax_preprocess_html(&$variables) {
+	global $user;
+	global $base_url;
+	if($user->uid > 1){
+		/*-------------------------------------------------------------------*/
+		$org_color = '';
+		$org_colors = '';
+		$query_org = db_select('field_data_field_organisation_uaccount', 'oa');
+		$result_org = $query_org
+		  ->fields('oa', array('field_organisation_uaccount_target_id'))
+		  ->condition('entity_id', $user->uid,'=')
+		  ->execute();
+		foreach ($result_org as $row_org) {
+			$org_id = $row_org->field_organisation_uaccount_target_id;
+			$query_org1 = db_select('field_data_field_site_colours_org', 'oc');
+			$results_org1 = $query_org1
+			  ->fields('oc', array('field_site_colours_org_rgb'))
+			  ->condition('bundle', 'pmorganization','=')
+			  ->condition('entity_id', $org_id,'=')
+			  ->execute();
+			  foreach ($results_org1 as $rows_org) {
+				$org_color = $rows_org->field_site_colours_org_rgb;
+				$org_colors = ltrim($org_color, '#');
+			}
+		}
+		
+		/*-------------------------------------------------------------------*/
+		$cnt_color = '';
+		$cnt_colors = '';
+		$query_cnt = db_select('field_data_field_organisation_uaccount', 'ou');
+		$result_cnt = $query_cnt
+		  ->fields('ou', array('field_organisation_uaccount_target_id'))
+		  ->condition('entity_id', $user->uid,'=')
+		  ->execute();
+		foreach ($result_cnt as $row_cnt) {
+			$org_id = $row_cnt->field_organisation_uaccount_target_id;
+			$query_cnt1 = db_select('field_data_field_content_color', 'cc');
+			$results_cnt1 = $query_cnt1
+			  ->fields('cc', array('field_content_color_rgb'))
+			  ->condition('bundle', 'pmorganization','=')
+			  ->condition('entity_id', $org_id,'=')
+			  ->execute();
+			  foreach ($results_cnt1 as $rows_cnt) {
+				$cnt_color = $rows_cnt->field_content_color_rgb;
+				$cnt_colors = ltrim($cnt_color, '#');
+			}
+		}
+		
+		/*-------------------------------------------------------------------*/
+		$bcg_color = '';
+		$bcg_colors = '';
+		$query_bcg = db_select('field_data_field_organisation_uaccount', 'uo');
+		$result_bcg = $query_bcg
+		  ->fields('uo', array('field_organisation_uaccount_target_id'))
+		  ->condition('entity_id', $user->uid,'=')
+		  ->execute();
+		foreach ($result_bcg as $row_bcg) {
+			$org_id = $row_bcg->field_organisation_uaccount_target_id;
+			$query_bcg1 = db_select('field_data_field_body_backgroung_color', 'bc');
+			$results_bcg1 = $query_bcg1
+			  ->fields('bc', array('field_body_backgroung_color_rgb'))
+			  ->condition('bundle', 'pmorganization','=')
+			  ->condition('entity_id', $org_id,'=')
+			  ->execute();
+			  foreach ($results_bcg1 as $rows_bcg) {
+				$bcg_color = $rows_bcg->field_body_backgroung_color_rgb;
+				$bcg_colors = ltrim($bcg_color, '#');
+			}
+		}
+		
+		$variables['classes_array'][] = "orgnization_color-".$org_colors;
+		$variables['classes_array'][] .= "gagan-".$cnt_colors;
+		$variables['classes_array'][] .= "deep-".$bcg_colors;
+		drupal_add_css('.orgnization_color-'.$org_colors.' #header {background: '.$org_color.';}', 'inline');
+		drupal_add_css('.deep-'.$bcg_colors.' #main-wrapper {background: '.$bcg_color.';}', 'inline');
+		//drupal_add_css('.gagan-'.$cnt_colors.' #content {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.gagan-'.$cnt_colors.' #sidebar-first {background: '.$cnt_color.';}', 'inline');
+		//drupal_add_css('.gagan-'.$cnt_colors.' .house_admin_title {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.gagan-'.$cnt_colors.' .house-admin-views {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.gagan-'.$cnt_colors.' #block-system-main {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.gagan-'.$cnt_colors.' .common-todo {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.gagan-'.$cnt_colors.' .actions-block {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.gagan-'.$cnt_colors.' .view-content {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.gagan-'.$cnt_colors.' .view-header {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.gagan-'.$cnt_colors.' .content {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.gagan-'.$cnt_colors.' .action-links {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.gagan-'.$cnt_colors.' .fieldset-legend {background: '.$cnt_color.';}', 'inline');
+		drupal_add_css('.orgnization_color-'.$org_colors.' #footer-wrapper {background: '.$org_color.';}', 'inline');
+		
+	}	
+}
+ 
+ 
+ 
+
+/***********************************************************************/    
+			/**
+			 * Implements hook_form_submit (Organization member will auto listed)*/
+/***********************************************************************/     
+function custom_caretrax_form_submit($form, &$form_state) {
+	//print '<pre>'; print_r ($form_state['values']); exit;
+	
+    if($form_state['input']['form_id']  == 'user_register_form'){
+		$cc_user = $form_state['input']['name'];
+		$cc_orguser = $form_state['input']['field_organisation_uaccount']['und'];
+		$ccuser_account = user_load_by_name($cc_user);
+		$count = db_select('field_data_pmorganization_members')
+	
+			->condition('entity_id', $cc_orguser)
+			->countQuery()->execute()->fetchField();
+		$node = node_load($cc_orguser);
+		$node->pmorganization_members[LANGUAGE_NONE][$count]['target_id'] = $ccuser_account->uid;
+		field_attach_update('node', $node);
+		drupal_set_message(t('Member added Seccussfully.'), 'status');		
+	}
+
+	//~ if(!empty($form_state['values']['field_status_al'])){
+			//~ if(isset($form_state['values']['field_status_al']['und'][0]['tid'])){
+				//~ }else{
+		//~ $form_state['values']['field_status_al']['und'][0]['tid']=='';
+		//~ }
+//}
+
+
+if((@$form_state['values']['field_status_al']['und'][0]['tid'] == 93) || (@$form_state['values']['field_status_conv']['und'][0]['tid'] == 83) ||
+(@$form_state['values']['field_status_inc']['und'][0]['tid'] == 83) || (@$form_state['values']['field_status_kwc']['und'][0]['tid'] == 93) ||
+(@$form_state['values']['field_status_expenses']['und'][0]['tid'] == 83) || (@$form_state['values']['field_status_pro']['und'][0]['tid'] == 83) ||
+(@$form_state['values']['field_status_wr']['und'][0]['tid'] == 83) || (@$form_state['values']['field_status_phy']['und'][0]['tid'] == 83) ||
+(@$form_state['values']['field_status_activity']['und'][0]['tid'] == 93) || (@$form_state['values']['field_status_ds']['und'][0]['tid'] == 83) ||
+(@$form_state['values']['field_status_fac']['und'][0]['tid'] == 93) || (@$form_state['values']['field_status_risk_ass']['und'][0]['tid'] == 83) ||
+(@$form_state['values']['field_status_cr']['und'][0]['tid'] == 93) || (@$form_state['values']['field_status_ho']['und'][0]['tid'] == 93) ||
+(@$form_state['values']['field_status_bs']['und'][0]['tid'] == 83) ){ 
+
+	$todo_node_title = $form_state['values']['title'];
+	$todo_node_nid = $form_state['values']['nid'];
+	$todo_node_authorid = $form_state['values']['uid'];
+	global $base_url;
+		  $node = new stdClass();
+		  $node->title = $todo_node_title.' has been rejected';
+		  $node_body = 'The node has been rejected. Please <a href="'.$base_url.'/node/'.$todo_node_nid.'/edit">click here</a> to edit the node.';
+		  $node->field_description_todo['und'][0]['value'] = $node_body;
+		  $node->field_description_todo['und'][0]['format'] = 'full_html';
+
+		  $node->type = "pmtask";
+		  $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
+		  $node->uid = $todo_node_authorid; 
+		  $node->status = 1; //(1 or 0): published or not
+		  $node->promote = 0; //(1 or 0): promoted to front page
+		  $node = node_submit($node); // Prepare node for saving
+		  node_save($node);
+
+	}
+	
+
+	
+	
+
+	
+			//~ if($form_state['input']['form_id']  == 'pmproject_node_form'){
+				//~ 
+				//~ $custom_project_name = $form_state['build_info']['args'][0]->title;
+				//~ $custom_organization_name = $form_state['build_info']['args'][0]->pmproject_parent['und'][0]['target_id'];
+				//~ $team_id = $form_state['build_info']['args'][0]->field_staff_list_house['und'][0]['target_id'];
+				//~ 
+				//~ $result_team = db_select('field_data_pmteam_user', 'p')
+					//~ ->fields('p', array('pmteam_user_target_id '))
+					//~ ->condition('entity_id', $team_id, '=')
+					//~ ->execute()->fetchCol();
+				//~ $i = 1;
+				//~ foreach ($result_team as &$value) {
+					//~ $count = db_select('custom_team_member')
+						//~ ->condition('custom_team_name', $team_id)
+						//~ ->condition('custom_team_member', $value)
+						//~ ->condition('custom_project_name', $custom_project_name)
+						//~ ->countQuery()->execute()->fetchField();
+					//~ //print_r($count); exit;  
+					//~ if ($count > 0) {
+						//~ db_update('custom_team_member')
+						  //~ ->condition('omid', $i)
+						  //~ ->fields(array('custom_team_member' => $value))
+						  //~ ->execute();
+					//~ }
+					//~ else {
+						//~ db_insert('custom_team_member')
+							//~ ->fields(array('custom_team_name' => $team_id, 'custom_team_member' => $value, 'delta' => $i, 'custom_project_name' => $custom_project_name, 'custom_organization_name' => $custom_organization_name))
+							//~ ->execute();	
+					//~ }
+					//~ 
+					//~ $i ++;
+				//~ }
+			//~ }
+	
+	
+}
+/*
+ * Implements hook_node_presave()
+ */
+/***********************************************************************/
+function custom_caretrax_node_presave($node) {
+	
+	
+    if ($node->type == 'pmproject') {
+      
+    //  print '<pre>'; 
+     //  print_r ($node->field__team_members_house); 
+    //   exit;
+        
+      $team_id=$node->field_staff_list_house['und'][0]['target_id'];
+		$result_team = db_select('field_data_pmteam_user', 'p')
+			->fields('p', array('pmteam_user_target_id '))
+			->condition('entity_id', $team_id, '=')
+			->execute()->fetchCol();
+		
+		//print '<pre>'; print_r ($team_id); exit;
+		
+		
+		$bb='';
+		$i=0;
+		foreach($result_team as $team)
+		{
+			$bb['und'][$i]['target_id']=$team;
+		//	->condition('custom_team_member', $team)
+			$i++;
+		}
+		
+		$node->field__team_members_house=$bb;
+		$node->original->field__team_members_house=$bb; 
+			//~ echo'<pre>';
+			//~ print_r($node->original);
+			//~ exit;
+			//print '<pre>'; print_r ($node); exit;
+		}
+		
+/***********************************************************************/		
+  if ($node->type == 'activity_money') {
+      
+      //~ print '<pre>'; 
+       //~ print_r ($node->field_money_in); 
+       //~ exit;
+        
+      //~ @$child_name 			= $node->field_child_name_activity['und'][0]['target_id'];
+      //~ @$activity_type 		= $node->field_type_activity['und'][0]['target_id'];
+      //~ @$money_in 			= $node->field_money_in['und'][0]['value'];
+      //~ @$money_out 			= $node->field_money_out['und'][0]['value'];
+      //~ @$remaining_balance 	= $node->field_balance['und'][0]['value'];
+      //~ 
+      
+     
+        //~ 
+         //~ $activity_id = $node->field_type_activity['und'][0]['tid'];
+         //~ 
+		  //~ @$result_balance = db_select('field_data_field_balance', 'p')
+			//~ ->fields('p', array('field_balance_value'))
+			//~ ->condition($activity_id, $activity_id, '=')
+		    //~ ->execute()->fetchCol();
+		
+		//~ print '<pre>'; print_r ($result_balance); exit;	
+		
+	
+		
+	}
+
+
+}
+
+
+
+	
+	
+/*
+ * For activity Money form
+ ********************************************************************
+ */
+
+	
+function custom_caretrax_menu(){
+  $items = array();
+
+  $items['mypage']=array(
+    'title'=>t('Activity Balance'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('custom_work_mypage_view'),
+   // 'access arguments' => array('access content'),
+   // 'page callback' => 'register_click',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  
+    $items['dailypage']=array(
+    'title'=>t('Daily Summery Ajax'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('custom_work_dailypage_view'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['inc']=array(
+    'title'=>t('Daily Summery Ajax Inc'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('custom_work_dailypage_view_inc'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+ $items['phy']=array(
+    'title'=>t('Daily Summery Ajax phy'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('custom_work_view_phy'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}	
+		
+function custom_work_mypage_view(){
+	
+	$childname = $_GET['child_name'];
+	$activity_type = $_GET['activity_type'];
+	$activity_nid = db_query("SELECT node.nid AS nid, node.created AS node_created FROM node
+		LEFT JOIN field_data_field_child_name_activity ON node.nid = field_data_field_child_name_activity.entity_id
+		AND field_data_field_child_name_activity.entity_type = 'node'
+		INNER JOIN field_data_field_type_activity ON node.nid = field_data_field_type_activity.entity_id
+		AND field_data_field_type_activity.entity_type = 'node'
+		WHERE ((( node.status = '1') AND (node.type IN ('activity_money')) 
+		AND (field_data_field_child_name_activity.field_child_name_activity_target_id = ".$childname.")
+		AND (field_data_field_type_activity.field_type_activity_tid = ".$activity_type."))) 
+		ORDER BY node_created DESC LIMIT 1 OFFSET 0");
+		
+    $activity_nidresult = $activity_nid->fetchAll(); 
+    if(!$activity_nidresult == ''){    
+    foreach( $activity_nidresult as $key => $value){
+		 $act_nid = $value->nid;
+		}
+	$activity_balance = db_query("SELECT field_balance_value  FROM `field_data_field_balance` WHERE `entity_id` = $act_nid");
+	$activity_blncresult = $activity_balance->fetchAll(); 
+
+			foreach( $activity_blncresult as $key => $value){
+				$balance = $value->field_balance_value;
+				}	
+	}else{
+		$balance = 0;
+		}
+		
+			print $balance; exit;
+
+ }	
+ /* Daily Summery Ajax page */
+/**************************************************************************/
+		
+function custom_work_dailypage_view(){
+	
+	@$summary_child = $_GET['summary_child'];	
+	$d_summry = db_query("SELECT node.nid AS nid, node.title AS node_title FROM node
+			LEFT JOIN field_data_field_child_name_conv ON node.nid = field_data_field_child_name_conv.entity_id 
+			AND field_data_field_child_name_conv.entity_type = 'node'
+			WHERE (( (node.status = '1') AND (node.type IN  ('conversations')) 
+			AND (field_data_field_child_name_conv.field_child_name_conv_target_id = $summary_child) ))");
+		$summryresult = $d_summry->fetchAll(); 
+    if(!$summryresult == ''){    
+		foreach( $summryresult as $key => $value){
+		 $summary_output = $value->node_title;
+		 $summary_id = $value->nid;
+		// print '<pre>'; print_r ($summary_output); exit;
+	echo "<option value='$summary_id'>$summary_output</option>"; 
+
+			}exit;
+		}exit;
+		
+}
+function custom_work_dailypage_view_inc(){	
+	
+	@$inc_child = $_GET['inc_child'];	
+	$d_summry_inc = db_query("SELECT node.nid AS nid,node.title AS node_title FROM node
+				LEFT JOIN field_data_field_child_name_inc ON node.nid = field_data_field_child_name_inc.entity_id
+				AND field_data_field_child_name_inc.entity_type = 'node'
+				WHERE (( (node.status = '1') AND (node.type IN  ('incident_form_'))
+				AND (field_data_field_child_name_inc.field_child_name_inc_target_id = $inc_child) ))");
+		$inc_result = $d_summry_inc->fetchAll(); 
+    if(!$inc_result == ''){    
+		foreach( $inc_result as $key => $value){
+		 $inc_output = $value->node_title;
+		 $inc_id = $value->nid;
+		//print '<pre>'; print_r ($inc_output); 
+		//print '<pre>'; print_r ($inc_id); exit;
+	echo "<option value='$inc_id'>$inc_output</option>"; 
+
+			}exit;
+		}exit;	
+ }
+ 
+ function custom_work_view_phy(){	
+	
+	@$phy_child = $_GET['phy_child'];	
+	$d_summry_phy = db_query("SELECT node.nid AS nid , node.title AS node_title FROM node
+				LEFT JOIN field_data_field_child_name_phy ON node.nid = field_data_field_child_name_phy.entity_id 
+				AND field_data_field_child_name_phy.entity_type = 'node'
+				WHERE (( (node.status = '1') AND (node.type IN  ('physical_intervention')) 
+				AND (field_data_field_child_name_phy.field_child_name_phy_target_id = $phy_child) ))");
+		$phy_result = $d_summry_phy->fetchAll(); 
+    if(!$phy_result == ''){    
+		foreach( $phy_result as $key => $value){
+		 $phy_output = $value->node_title;
+		 $phy_id = $value->nid;
+		//print '<pre>'; print_r ($inc_output); 
+		//print '<pre>'; print_r ($inc_id); exit;
+	echo "<option value='$phy_id'>$phy_output</option>"; 
+
+			}exit;
+		}exit;	
+ }
+ 
